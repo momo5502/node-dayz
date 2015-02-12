@@ -341,12 +341,18 @@ function destroyPlayer(request, response)
   }
   else
   {
-    request.on("data", function(body)
-    {
-      overwriteFile("../data/saves/" + query.uid + ".json", body);
-      logger.log("Destroy player request handled (uid: " + query.uid + ").", request);
-    });
+    var player = {};
+    var file = "../data/saves/" + query.uid + ".json";
 
+    if(fs.existsSync(file))
+    {
+      player = JSON.parse(fs.readFileSync(file));
+    }
+
+    player.alive = 0;
+
+    overwriteFile(file, JSON.stringify(player));
+    logger.log("Destroy player request handled (uid: " + query.uid + ").", request);
     sendJsonResponse(response);
   }
 }
@@ -365,11 +371,18 @@ function killPlayer(request, response)
   }
   else
   {
-    request.on("data", function(body)
+    var player = {};
+    var file = "../data/saves/" + query.uid + ".json";
+
+    if(fs.existsSync(file))
     {
-      overwriteFile("../data/saves/" + query.uid + ".json", "");
-      logger.log("Kill player request handled (uid: " + query.uid + ").", request);
-    });
+      player = JSON.parse(fs.readFileSync(file));
+    }
+
+    player.alive = 0;
+
+    overwriteFile(file, JSON.stringify(player));
+    logger.log("Kill player request handled (uid: " + query.uid + ").", request);
 
     sendJsonResponse(response);
   }
