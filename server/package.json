@@ -3,7 +3,7 @@
   "name": "NodeDayZ",
   "description": "NodeJS based DayZServlet",
   "author": "Maurice Heumann (momo5502) <mail@momo5502.com> (https://momo5502.com)",
-  "main": "./server.js",
+  "main": "./main.js",
 
   "dependencies":
   {
