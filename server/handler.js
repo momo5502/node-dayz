@@ -88,16 +88,14 @@ function logSpawnStats(request, response)
 function sendConfigResponse(response)
 {
   var version = [0, 53, 126384];
-  //version = [0, 52, 126010];
-  //version = [0, 52, 125994];
 
   var config =
   {
     success          : 1,       // Success?
-    current          : 1,       // Current?
-    next             : 0,       // ?
-    timeout          : 10,      // Timeout?
-    type             : "COOP",  // Gametype?
+    current          : 1,       // Current state
+    next             : 1,       // Next state
+    timeout          : 5,       // Timeout?
+    type             : "COOP",  // Type?
 
     version_required : version, // Required version
     version_allowed  : version, // Allowed version
@@ -109,12 +107,12 @@ function sendConfigResponse(response)
 
     s_shutdown       : false,   // Shutdown server
     s_savestats      : true,    // Save stats
-    s_readrequests   : true,    // Read remote requests
+    s_readrequests   : false,   // Read remote requests and sync types
     s_dblog          : true,    // Log database messages
     s_devlog         : true,    // Log development message
     s_qalog          : false,   // Log item spawn messages (might spam and slow everything)
-    s_synctime       : 60,      // Setting synchronization time (in seconds)
-    s_statstime      : 3,       // Stats request time (in seconds)?
+    s_synctime       : 20,      // Setting synchronization time (in seconds)
+    s_statstime      : 0,       // Stats request time (in seconds)?
   };
 
   sendJsonResponse(response, config);
@@ -149,7 +147,7 @@ function handleRequests(request, response)
 
   var requests =
   {
-    count : 1, // What does it need that count for?
+    count : 0, // What does it need that count for?
   };
 
   sendJsonResponse(response, requests);
@@ -196,16 +194,21 @@ function findPlayer(request, response)
   }
   else
   {
-    var data = "{}";
+    var player = {};
     var file = "../data/saves/" + query.uid + ".json";
 
     if(fs.existsSync(file))
     {
-      data = fs.readFileSync(file);
+      player = JSON.parse(fs.readFileSync(file));
     }
 
+    // Game differs between integers and bools!
+    // Good job Bohemia xD
+    if(player.alive) player.alive = true;
+    else player.alive = false;
+
     logger.log("Find player request handled (uid: " + query.uid + ").", request);
-    sendRawJsonResponse(response, data);
+    sendRawJsonResponse(response, JSON.stringify(player));
   }
 }
 
@@ -324,6 +327,54 @@ function queuePlayer(request, response)
   }
 }
 
+function destroyPlayer(request, response)
+{
+  var query = url.parse(request.url, true).query;
+
+  if(query.uid == null)
+  {
+    logger.warn("Destroy player request error: No userid given.", request);
+  }
+  else if(isNaN(query.uid))
+  {
+    logger.warn("Destroy player request error: Userid is not numerical.", request);
+  }
+  else
+  {
+    request.on("data", function(body)
+    {
+      overwriteFile("../data/saves/" + query.uid + ".json", body);
+      logger.log("Destroy player request handled (uid: " + query.uid + ").", request);
+    });
+
+    sendJsonResponse(response);
+  }
+}
+
+function killPlayer(request, response)
+{
+  var query = url.parse(request.url, true).query;
+
+  if(query.uid == null)
+  {
+    logger.warn("Kill player request error: No userid given.", request);
+  }
+  else if(isNaN(query.uid))
+  {
+    logger.warn("Kill player request error: Userid is not numerical.", request);
+  }
+  else
+  {
+    request.on("data", function(body)
+    {
+      overwriteFile("../data/saves/" + query.uid + ".json", "");
+      logger.log("Kill player request handled (uid: " + query.uid + ").", request);
+    });
+
+    sendJsonResponse(response);
+  }
+}
+
 function parseRoot(request, response)
 {
   response.writeHead(200, {"Content-Type": "text/html"});
@@ -375,8 +426,10 @@ function setup()
   registerResponseHandler("/DayZServlet/a_0fg/create/", createPlayer);
   registerResponseHandler("/DayZServlet/a_0fg/save/", savePlayer);
   registerResponseHandler("/DayZServlet/a_0fg/queue/", queuePlayer);
+  registerResponseHandler("/DayZServlet/a_0fg/destroy/", destroyPlayer);
+  registerResponseHandler("/DayZServlet/a_0fg/kill/", killPlayer);
 
-// Others
+  // Others
   registerResponseHandler("/", parseRoot);
 }
 
