@@ -64,7 +64,7 @@ function parseHTTPData(request, response)
   }
   else
   {
-    console.warn(colors.yellow("Unhandled request (" + request.method + "): " + request.url));
+    console.warn(colors.yellow(reqLogPrefix(request) + "Unhandled request (" + request.method + "): " + request.url));
 
     request.on("data", function(body)
     {
@@ -102,9 +102,16 @@ createDir("../data/saves/");
 
 // Custom stuff
 
+function reqLogPrefix(request)
+{
+  var ipv6 = request.connection.remoteAddress;
+  var ipv4 = ipv6.substring(ipv6.lastIndexOf(":") + 1);
+  return "[" + ipv4 + "] ";
+}
+
 function initializeEnvironment(request, response)
 {
-  console.log("Environment initalization requested.");
+  console.log(reqLogPrefix(request) + "Environment init request handled.");
 
   // Resolve requested host
   var host = request.headers.host;
@@ -121,7 +128,7 @@ function initializeEnvironment(request, response)
 
 function pingResponse(request, response)
 {
-  console.log("Ping request handled.");
+  console.log(reqLogPrefix(request) + "Ping request handled.");
   sendJsonResponse(response);
 }
 
@@ -131,7 +138,7 @@ function logSpawnStats(request, response)
   {
     var data = JSON.parse(body);
 
-    console.log("Server spawn (code: " + data.code + ", spawned: " + data.spawned + ", loaded: " + data.loaded + ") handled.");
+    console.log(reqLogPrefix(request) + "Server spawn (code: " + data.code + ", spawned: " + data.spawned + ", loaded: " + data.loaded + ") handled.");
   });
 
   sendJsonResponse(response);
@@ -174,13 +181,13 @@ function sendConfigResponse(response)
 
 function serverStartup(request, response)
 {
-  console.log("Server startup handled.");
+  console.log(reqLogPrefix(request) + "Server startup handled.");
   sendConfigResponse(response);
 }
 
 function serverSync(request, response)
 {
-  console.log("Server sync handled.");
+  console.log(reqLogPrefix(request) + "Server sync handled.");
   sendConfigResponse(response);
 }
 
@@ -189,7 +196,7 @@ function reportMessage(request, response)
   request.on("data", function(body)
   {
     var data = JSON.parse(body);
-    console.warn(colors.yellow("Server report:" + data.message));
+    console.warn(colors.yellow(reqLogPrefix(request) + "Server report:" + data.message));
   });
 
   sendJsonResponse(response);
@@ -197,7 +204,7 @@ function reportMessage(request, response)
 
 function handleRequests(request, response)
 {
-  console.log("Server requests handled.");
+  console.log(reqLogPrefix(request) + "Server requests handled.");
 
   var requests =
   {
@@ -209,7 +216,7 @@ function handleRequests(request, response)
 
 function getGlobalTypes(request, response)
 {
-  console.log("Global type request handled.");
+  console.log(reqLogPrefix(request) + "Global type request handled.");
 
   var types = "{}";
 
@@ -224,7 +231,7 @@ function getGlobalTypes(request, response)
 
 function setGlobalTypes(request, response)
 {
-  console.log("Global type saving handled.");
+  console.log(reqLogPrefix(request) + "Global type saving handled.");
 
   request.on("data", function(body)
   {
@@ -240,11 +247,11 @@ function findPlayer(request, response)
 
   if(query.uid == null)
   {
-    console.warn(colors.yellow("Find player request error: No userid given."));
+    console.warn(colors.yellow(reqLogPrefix(request) + "Find player request error: No userid given."));
   }
   else if(isNaN(query.uid))
   {
-    console.warn(colors.yellow("Find player request error: Userid is not numerical."));
+    console.warn(colors.yellow(reqLogPrefix(request) + "Find player request error: Userid is not numerical."));
   }
   else
   {
@@ -256,7 +263,7 @@ function findPlayer(request, response)
       data = fs.readFileSync(file);
     }
 
-    console.log("Find player request handled (uid: " + query.uid + ").");
+    console.log(reqLogPrefix(request) + "Find player request handled (uid: " + query.uid + ").");
     sendRawJsonResponse(response, data);
   }
 }
@@ -267,11 +274,11 @@ function loadPlayer(request, response)
 
   if(query.uid == null)
   {
-    console.warn(colors.yellow("Load player request error: No userid given."));
+    console.warn(colors.yellow(reqLogPrefix(request) + "Load player request error: No userid given."));
   }
   else if(isNaN(query.uid))
   {
-    console.warn(colors.yellow("Load player request error: Userid is not numerical."));
+    console.warn(colors.yellow(reqLogPrefix(request) + "Load player request error: Userid is not numerical."));
   }
   else
   {
@@ -283,7 +290,7 @@ function loadPlayer(request, response)
       data = fs.readFileSync(file);
     }
 
-    console.log("Load player request handled (uid: " + query.uid + ").");
+    console.log(reqLogPrefix(request) + "Load player request handled (uid: " + query.uid + ").");
     sendRawJsonResponse(response, data);
   }
 }
@@ -294,11 +301,11 @@ function createPlayer(request, response)
 
   if(query.uid == null)
   {
-    console.warn(colors.yellow("Create player request error: No userid given."));
+    console.warn(colors.yellow(reqLogPrefix(request) + "Create player request error: No userid given."));
   }
   else if(isNaN(query.uid))
   {
-    console.warn(colors.yellow("Create player request error: Userid is not numerical."));
+    console.warn(colors.yellow(reqLogPrefix(request) + "Create player request error: Userid is not numerical."));
   }
   else
   {
@@ -310,7 +317,7 @@ function createPlayer(request, response)
       fs.writeFileSync(file, data);
     }
 
-    console.log("Create player request handled (uid: " + query.uid + ").");
+    console.log(reqLogPrefix(request) + "Create player request handled (uid: " + query.uid + ").");
     sendJsonResponse(response);
   }
 }
@@ -321,18 +328,18 @@ function savePlayer(request, response)
 
   if(query.uid == null)
   {
-    console.warn(colors.yellow("Save player request error: No userid given."));
+    console.warn(colors.yellow(reqLogPrefix(request) + "Save player request error: No userid given."));
   }
   else if(isNaN(query.uid))
   {
-    console.warn(colors.yellow("Save player request error: Userid is not numerical."));
+    console.warn(colors.yellow(reqLogPrefix(request) + "Save player request error: Userid is not numerical."));
   }
   else
   {
     request.on("data", function(body)
     {
       overwriteFile("../data/saves/" + query.uid + ".json", body);
-      console.log("Save player request handled (uid: " + query.uid + ").");
+      console.log(reqLogPrefix(request) + "Save player request handled (uid: " + query.uid + ").");
     });
 
     sendJsonResponse(response);
@@ -345,11 +352,11 @@ function queuePlayer(request, response)
 
   if(query.uid == null)
   {
-    console.warn(colors.yellow("Queue player request error: No userid given."));
+    console.warn(colors.yellow(reqLogPrefix(request) + "Queue player request error: No userid given."));
   }
   else if(isNaN(query.uid))
   {
-    console.warn(colors.yellow("Queue player request error: Userid is not numerical."));
+    console.warn(colors.yellow(reqLogPrefix(request) + "Queue player request error: Userid is not numerical."));
   }
   else
   {
@@ -369,7 +376,7 @@ function queuePlayer(request, response)
 
       overwriteFile(file, JSON.stringify(player));
 
-      console.log("Queue player request handled (uid: " + query.uid + ", queue: " + data.queue + ").");
+      console.log(reqLogPrefix(request) + "Queue player request handled (uid: " + query.uid + ", queue: " + data.queue + ").");
     });
 
     sendJsonResponse(response);
