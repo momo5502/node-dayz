@@ -1,0 +1,13 @@
+{
+  "version": "0.53.126384",
+  "name": "NodeDayZ",
+  "description": "NodeJS based DayZServlet",
+  "author": "Maurice Heumann (momo5502) <mail@momo5502.com> (https://momo5502.com)",
+  "main": "./server.js",
+
+  "dependencies":
+  {
+    "url": "0.10.2",
+    "colors": "1.0.3"
+  }
+}
