@@ -1,7 +1,9 @@
-var url    = require("url");
-var http   = require("http");
-var logger = require('./logger');
+var url         = require("url");
+var http        = require("http");
+var tcpPortUsed = require('tcp-port-used');
+var logger      = require('./logger');
 
+var server  = null;
 var handler = null;
 
 function parseHTTPData(request, response)
@@ -26,7 +28,7 @@ function parseHTTPData(request, response)
     });
 
     response.writeHead(404, {"Content-Type": "text/plain"});
-    response.write("Request not supported, faggot.");
+    response.write("Request not supported.");
     response.end();
   }
 }
@@ -39,11 +41,22 @@ function useHandler(_handler)
 
 function start(port)
 {
-  logger.info("Starting web server on port " + port);
-
-  var server;
-  server = http.createServer(parseHTTPData);
-  server.listen(port);
+  tcpPortUsed.check(port, 'localhost').then(function(inUse)
+  {
+    if(inUse)
+    {
+      logger.error("Port " + port + " already in use!");
+    }
+    else
+    {
+      server = http.createServer(parseHTTPData);
+      server.listen(port);
+      logger.info("NodeDayZ server started on port " + port);
+    }
+  }, function(err)
+  {
+    logger.error("Port check failed: " + err.message);
+  });
 }
 
 exports.useHandler = useHandler

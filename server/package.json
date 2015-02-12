@@ -8,6 +8,7 @@
   "dependencies":
   {
     "url": "0.10.2",
-    "colors": "1.0.3"
+    "colors": "1.0.3",
+	"tcp-port-used": "0.1.2"
   }
 }
