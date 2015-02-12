@@ -97,6 +97,7 @@ server = http.createServer(parseHTTPData);
 server.listen(port);
 
 // Setup data structure
+createDir("../data/");
 createDir("../data/saves/");
 
 // Custom stuff
