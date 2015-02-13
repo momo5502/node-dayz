@@ -2,6 +2,7 @@ var fs     = require('fs');
 var url    = require('url');
 var logger = require('./logger');
 var utils  = require('./utils');
+var config = require('../config');
 
 var initialized = false;
 var responseHandlers = [];
@@ -70,35 +71,8 @@ function logSpawnStats(request, response)
 
 function sendConfigResponse(response)
 {
-  var version = [0, 53, 126384];
-
-  var config =
-  {
-    success          : 1,       // Success?
-    current          : 1,       // Current state
-    next             : 1,       // Next state
-    timeout          : 5,       // Timeout?
-    type             : "COOP",  // Type?
-
-    version_required : version, // Required version
-    version_allowed  : version, // Allowed version
-
-    key              : "ZOB",   // Some key?
-    check            : 1,       // Key check?
-    lowcountp        : 1,       // ?
-    mincount         : 1,       // ?
-
-    s_shutdown       : false,   // Shutdown server
-    s_savestats      : true,    // Save stats
-    s_readrequests   : false,   // Read remote requests and sync types
-    s_dblog          : true,    // Log database messages
-    s_devlog         : true,    // Log development message
-    s_qalog          : false,   // Log item spawn messages (might spam and slow everything)
-    s_synctime       : 20,      // Setting synchronization time (in seconds)
-    s_statstime      : 0,       // Stats request time (in seconds)?
-  };
-
-  sendJsonResponse(response, config);
+  // TODO: Probably reload the config here?
+  sendJsonResponse(response, config.dediConfig);
 }
 
 function serverStartup(request, response)
@@ -127,13 +101,7 @@ function reportMessage(request, response)
 function handleRequests(request, response)
 {
   logger.log("Server requests handled.", request);
-
-  var requests =
-  {
-    count : 0, // What does it need that count for?
-  };
-
-  sendJsonResponse(response, requests);
+  sendJsonResponse(response, config.dediRequests);
 }
 
 function getGlobalTypes(request, response)

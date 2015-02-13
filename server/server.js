@@ -4,16 +4,13 @@ var ipaddr      = require('ipaddr.js');
 var tcpPortUsed = require('tcp-port-used');
 var utils       = require('./utils');
 var logger      = require('./logger');
+var config      = require('../config');
 
 var server  = null;
 var handler = null;
 var resolvedList = [];
 
-var whitelist =
-[
-  ["192.168.0.0", 24],
-  ["localhost", 32]
-];
+var whitelist = config.whitelist;
 
 // Whitelist IPs
 function isLegalRequest(request)

@@ -1,6 +1,7 @@
 var clc     = require('cli-color');
 var server  = require('./server');
 var handler = require('./handler');
+var config  = require('../config');
 
 process.title = "NodeDayZ";
 
@@ -11,4 +12,4 @@ console.log(clc.blackBright("#                                                  
 console.log(clc.blackBright("###############################################################################\n"));
 
 server.useHandler(handler);
-server.start(80);
+server.start(config.port);
