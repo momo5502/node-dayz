@@ -1,57 +1,24 @@
-var clc     = require('cli-color');
-
-function addLeadingZero(number)
-{
-  var string = "" + number;
-
-  if(number < 10)
-  {
-    string = "0" + string;
-  }
-
-  return string;
-}
-
-function getTimeStamp()
-{
-  var date = new Date();
-  var hours = addLeadingZero(date.getHours());
-  var minutes = addLeadingZero(date.getMinutes());
-  var seconds = addLeadingZero(date.getSeconds());
-
-  return "[" + hours + ":" + minutes + ":" + seconds + "] ";
-}
-
-// DayZ uses IPv4, so that's fine
-function getRequestIP(request)
-{
-  return ""; // Not necessary atm.
-
-  if(request == null) return "";
-
-  var ipv6 = request.connection.remoteAddress;
-  var ipv4 = ipv6.substring(ipv6.lastIndexOf(":") + 1);
-  return "[" + ipv4 + "] ";
-}
+var clc   = require('cli-color');
+var utils = require('./utils');
 
 function log(message, request)
 {
-  console.log(getTimeStamp() + getRequestIP(request) + message);
+  console.log(utils.logTimestamp() + message);
 }
 
 function warn(message, request)
 {
-  console.warn(clc.yellowBright(getTimeStamp() + getRequestIP(request) + message));
+  console.warn(clc.yellowBright(utils.logTimestamp() + message));
 }
 
 function error(message, request)
 {
-  console.error(clc.redBright(getTimeStamp() + getRequestIP(request) + message));
+  console.error(clc.redBright(utils.logTimestamp() + message));
 }
 
 function info(message, request)
 {
-  console.info(clc.cyanBright(getTimeStamp() + getRequestIP(request) + message));
+  console.info(clc.cyanBright(utils.logTimestamp() + message));
 }
 
 exports.log   = log;

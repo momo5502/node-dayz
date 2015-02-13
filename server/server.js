@@ -1,13 +1,68 @@
 var url         = require("url");
 var http        = require("http");
+var ipaddr      = require('ipaddr.js');
 var tcpPortUsed = require('tcp-port-used');
+var utils       = require('./utils');
 var logger      = require('./logger');
 
 var server  = null;
 var handler = null;
+var resolvedList = [];
 
-function parseHTTPData(request, response)
+var whitelist =
+[
+  ["192.168.0.0", 24],
+  ["localhost", 32]
+];
+
+// Whitelist IPs
+function isLegalRequest(request)
 {
+  var ip = utils.getIP(request);
+
+  // Check for validity
+  if(ipaddr.isValid(ip))
+  {
+    var addr = ipaddr.parse(ip);
+
+    // Loop through whitelist
+    for(var i = 0; i < whitelist.length; i++)
+    {
+      // Parse whitelist ip
+      var checkIP = whitelist[i][0];
+      var bits    = whitelist[i][1];
+
+      if(ipaddr.isValid(checkIP))
+      {
+        var checkAddr = ipaddr.parse(checkIP);
+
+        if(addr.match(checkAddr, bits))
+        {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
+function denieRequest(response)
+{
+  response.writeHead(403, {"Content-Type": "text/plain"});
+  response.write("Access denied!");
+  response.end();
+}
+
+function requestHandler(request, response)
+{
+  if(!isLegalRequest(request))
+  {
+    logger.info("Access denied for: " + utils.getIP(request));
+    denieRequest(response);
+    return;
+  }
+
   var parsedUrl = url.parse(request.url, true);
 
   if(handler != null && handler.parse(parsedUrl.pathname, request, response))
@@ -39,9 +94,22 @@ function useHandler(_handler)
   handler.setup();
 }
 
+function resolveWhitelistHosts()
+{
+  for(var i = 0; i < whitelist.length; i++)
+  {
+    utils.resolveHost(whitelist[i][0], function(err, addresses, family, param)
+    {
+      whitelist[param][0] = addresses;
+    }, i);
+  }
+}
+
 function start(port)
 {
-  tcpPortUsed.check(port, 'localhost').then(function(inUse)
+  resolveWhitelistHosts();
+
+  tcpPortUsed.check(port, "127.0.0.1").then(function(inUse)
   {
     if(inUse)
     {
@@ -49,8 +117,8 @@ function start(port)
     }
     else
     {
-      server = http.createServer(parseHTTPData);
-      server.listen(port);
+      server = http.createServer(requestHandler);
+      server.listen(port, "0.0.0.0"); // Make sure to bind on IPv4
       logger.info("NodeDayZ server started on port " + port);
     }
   }, function(err)

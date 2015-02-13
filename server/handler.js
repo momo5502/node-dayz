@@ -1,6 +1,7 @@
 var fs     = require('fs');
 var url    = require('url');
 var logger = require('./logger');
+var utils  = require('./utils');
 
 var initialized = false;
 var responseHandlers = [];
@@ -27,24 +28,6 @@ function sendJsonResponse(response, data)
   }
 
   sendRawJsonResponse(response, responseBody);
-}
-
-function createDir(path)
-{
-  if(!fs.existsSync(path))
-  {
-    fs.mkdirSync(path);
-  }
-}
-
-function overwriteFile(file, data)
-{
-  if(fs.existsSync(file))
-  {
-    fs.unlinkSync(file);
-  }
-
-  fs.writeFileSync(file, data);
 }
 
 // ----------------------------------------------------------------------------------+
@@ -174,7 +157,7 @@ function setGlobalTypes(request, response)
 
   request.on("data", function(body)
   {
-    overwriteFile("../data/type.json", body);
+    utils.overwriteFile("../data/type.json", body);
   });
 
   sendJsonResponse(response);
@@ -282,7 +265,7 @@ function savePlayer(request, response)
   {
     request.on("data", function(body)
     {
-      overwriteFile("../data/saves/" + query.uid + ".json", body);
+      utils.overwriteFile("../data/saves/" + query.uid + ".json", body);
       logger.log("Save player request handled (uid: " + query.uid + ").", request);
     });
 
@@ -318,7 +301,7 @@ function queuePlayer(request, response)
 
       player.queue = data.queue; // Spawn delay
 
-      overwriteFile(file, JSON.stringify(player));
+      utils.overwriteFile(file, JSON.stringify(player));
 
       logger.log("Queue player request handled (uid: " + query.uid + ", queue: " + data.queue + ").", request);
     });
@@ -351,7 +334,7 @@ function destroyPlayer(request, response)
 
     player.alive = 0;
 
-    overwriteFile(file, JSON.stringify(player));
+    utils.overwriteFile(file, JSON.stringify(player));
     logger.log("Destroy player request handled (uid: " + query.uid + ").", request);
     sendJsonResponse(response);
   }
@@ -381,7 +364,7 @@ function killPlayer(request, response)
 
     player.alive = 0;
 
-    overwriteFile(file, JSON.stringify(player));
+    utils.overwriteFile(file, JSON.stringify(player));
     logger.log("Kill player request handled (uid: " + query.uid + ").", request);
 
     sendJsonResponse(response);
@@ -416,8 +399,8 @@ function setup()
   if(initialized) return;
   initialized = true;
 
-  createDir("../data/");
-  createDir("../data/saves/");
+  utils.createDir("../data/");
+  utils.createDir("../data/saves/");
 
   // Initialization
   registerResponseHandler("/DayZServlet/init/enviroment/", initializeEnvironment);
