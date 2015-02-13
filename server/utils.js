@@ -3,56 +3,56 @@ var dns = require('dns');
 
 function resolveHost(hostname, callback, param)
 {
-  dns.lookup(hostname, { family: 4, hints: dns.ADDRCONFIG | dns.V4MAPPED }, function(err, addresses, family)
-  {
-    callback(err, addresses, family, param);
-  });
+    dns.lookup(hostname, { family: 4, hints: dns.ADDRCONFIG | dns.V4MAPPED }, function(err, addresses, family)
+    {
+        callback(err, addresses, family, param);
+    });
 }
 
 function getIP(request)
 {
-  return request.connection.remoteAddress;
+    return request.connection.remoteAddress;
 }
 
 function formatTimeNum(number)
 {
-  var string = "" + number;
+    var string = "" + number;
 
-  if(number < 10)
-  {
-    string = "0" + string;
-  }
+    if(number < 10)
+    {
+        string = "0" + string;
+    }
 
-  return string;
+    return string;
 }
 
 
 function logTimestamp()
 {
-  var date = new Date();
-  var hours = formatTimeNum(date.getHours());
-  var minutes = formatTimeNum(date.getMinutes());
-  var seconds = formatTimeNum(date.getSeconds());
+    var date = new Date();
+    var hours = formatTimeNum(date.getHours());
+    var minutes = formatTimeNum(date.getMinutes());
+    var seconds = formatTimeNum(date.getSeconds());
 
-  return "[" + hours + ":" + minutes + ":" + seconds + "] ";
+    return "[" + hours + ":" + minutes + ":" + seconds + "] ";
 }
 
 function createDir(path)
 {
-  if(!fs.existsSync(path))
-  {
-    fs.mkdirSync(path);
-  }
+    if(!fs.existsSync(path))
+    {
+        fs.mkdirSync(path);
+    }
 }
 
 function overwriteFile(file, data)
 {
-  if(fs.existsSync(file))
-  {
-    fs.unlinkSync(file);
-  }
+    if(fs.existsSync(file))
+    {
+        fs.unlinkSync(file);
+    }
 
-  fs.writeFileSync(file, data);
+    fs.writeFileSync(file, data);
 }
 
 exports.getIP         = getIP;
