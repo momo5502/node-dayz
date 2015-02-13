@@ -1,4 +1,4 @@
-var colors = require('colors/safe');
+var clc     = require('cli-color');
 
 function addLeadingZero(number)
 {
@@ -41,17 +41,17 @@ function log(message, request)
 
 function warn(message, request)
 {
-  console.warn(colors.yellow(getTimeStamp() + getRequestIP(request) + message));
+  console.warn(clc.yellowBright(getTimeStamp() + getRequestIP(request) + message));
 }
 
 function error(message, request)
 {
-  console.error(colors.red(getTimeStamp() + getRequestIP(request) + message));
+  console.error(clc.redBright(getTimeStamp() + getRequestIP(request) + message));
 }
 
 function info(message, request)
 {
-  console.info(colors.cyan(getTimeStamp() + getRequestIP(request) + message));
+  console.info(clc.cyanBright(getTimeStamp() + getRequestIP(request) + message));
 }
 
 exports.log   = log;
