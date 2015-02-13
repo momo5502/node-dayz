@@ -62,7 +62,6 @@ function logSpawnStats(request, response)
     request.on("data", function(body)
     {
         var data = JSON.parse(body);
-
         logger.log("Server spawn (code: " + data.code + ", spawned: " + data.spawned + ", loaded: " + data.loaded + ") handled.", request);
     });
 
@@ -84,7 +83,7 @@ function serverStartup(request, response)
 function serverSync(request, response)
 {
     logger.log("Server sync handled.", request);
-      sendConfigResponse(response);
+    sendConfigResponse(response);
 }
 
 function reportMessage(request, response)

@@ -1,6 +1,6 @@
-exports.port = 80; // Server port
+exports.port = 80;              // Server port
 
-exports.whitelist = // IP/Hostname whitelist
+exports.whitelist =             // IP/Hostname whitelist
 [
     ["10.0.0.0"   , 16],
     ["192.168.0.0", 24],
@@ -8,7 +8,7 @@ exports.whitelist = // IP/Hostname whitelist
 ];
 
 // Environment config
-var version = [0, 53, 126384]; // DayZ Server version
+var version = [0, 53, 126384];  // DayZ Server version
 
 exports.dediConfig =
 {
@@ -28,7 +28,7 @@ exports.dediConfig =
 
     s_shutdown       : false,   // Shutdown server
     s_savestats      : true,    // Save stats
-    s_readrequests   : false,   // Read remote requests and sync types
+    s_readrequests   : true,    // Read remote requests and sync types
     s_dblog          : true,    // Log database messages
     s_devlog         : true,    // Log development message
     s_qalog          : false,   // Log item spawn messages (might spam and slow everything)
@@ -39,5 +39,5 @@ exports.dediConfig =
 // Dedi request response
 exports.dediRequests =
 {
-    count : 0, // Request count?
+    count : 0,                  // Request count?
 };
