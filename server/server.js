@@ -116,7 +116,7 @@ function start(port)
     {
       server = http.createServer(requestHandler);
       server.listen(port, "0.0.0.0"); // Make sure to bind on IPv4
-      logger.info("NodeDayZ server started on port " + port);
+      logger.info("Server started on port " + port);
     }
   }, function(err)
   {

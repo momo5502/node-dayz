@@ -7,7 +7,6 @@ exports.whitelist = // IP/Hostname whitelist
   ["localhost"  , 32],
 ];
 
-
 // Environment config
 var version = [0, 53, 126384]; // DayZ Server version
 
