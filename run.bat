@@ -1,4 +1,4 @@
 @echo off
 cd server
-"..\node\node" main.js
+node main.js
 pause

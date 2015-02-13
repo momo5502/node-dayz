@@ -2,7 +2,7 @@
   "version": "0.53.126384",
   "name": "NodeDayZ",
   "description": "NodeJS based DayZServlet",
-  "author": "Maurice Heumann (momo5502) <mail@momo5502.com> (https://momo5502.com)",
+  "author": "momo5502 <mail@momo5502.com> (https://momo5502.com)",
   "main": "./main.js",
 
   "dependencies":
