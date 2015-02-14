@@ -14,5 +14,3 @@ console.log(clc.blackBright("###################################################
 
 server.useHandler(handler);
 server.start(config.port);
-
-backup.start();

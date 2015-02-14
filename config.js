@@ -29,7 +29,7 @@ exports.dediConfig =
 
     s_shutdown       : false,   // Shutdown server
     s_savestats      : true,    // Save stats
-    s_readrequests   : true,    // Read remote requests and sync types
+    s_readrequests   : false,   // Read remote requests and sync types
     s_dblog          : true,    // Log database messages
     s_devlog         : true,    // Log development message
     s_qalog          : false,   // Log item spawn messages (might spam and slow everything)
@@ -45,4 +45,4 @@ exports.dediRequests =
 
 // Stats backup
 exports.enableBackups = true;
-exports.backupInterval = [1, 'hour'];
+exports.backupInterval = [30, 'minutes'];

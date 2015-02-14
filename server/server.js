@@ -4,6 +4,7 @@ var ipaddr      = require('ipaddr.js');
 var tcpPortUsed = require('tcp-port-used');
 var utils       = require('./utils');
 var logger      = require('./logger');
+var backup      = require('./backup');
 var config      = require('../config');
 
 var server  = null;
@@ -116,6 +117,7 @@ function start(port)
         {
             server = http.createServer(requestHandler);
             server.listen(port, "0.0.0.0"); // Make sure to bind on IPv4
+            backup.start();
             logger.info("Server started on port " + port);
         }
     }, function(err)
