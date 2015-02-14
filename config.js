@@ -42,3 +42,7 @@ exports.dediRequests =
 {
     count : 0,                  // Request count?
 };
+
+// Stats backup
+exports.enableBackups = true;
+exports.backupInterval = [1, 'hour'];

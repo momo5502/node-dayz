@@ -1,6 +1,7 @@
 var clc     = require('cli-color');
 var server  = require('./server');
 var handler = require('./handler');
+var backup  = require('./backup');
 var config  = require('../config');
 
 process.title = "NodeDayZ";
@@ -13,3 +14,5 @@ console.log(clc.blackBright("###################################################
 
 server.useHandler(handler);
 server.start(config.port);
+
+backup.start();

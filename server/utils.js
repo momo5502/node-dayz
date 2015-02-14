@@ -26,6 +26,19 @@ function formatTimeNum(number)
     return string;
 }
 
+function fileTimestamp()
+{
+    var date = new Date();
+	var year = date.getFullYear();
+	var month = formatTimeNum(date.getMonth());
+	var day = formatTimeNum(date.getDate());
+
+    var hours = formatTimeNum(date.getHours());
+    var minutes = formatTimeNum(date.getMinutes());
+    var seconds = formatTimeNum(date.getSeconds());
+
+    return year + "-" + month + "-" + day + " " + hours + "-" + minutes + "-" + seconds;
+}
 
 function logTimestamp()
 {
@@ -58,6 +71,7 @@ function overwriteFile(file, data)
 exports.getIP         = getIP;
 exports.resolveHost   = resolveHost;
 exports.formatTimeNum = formatTimeNum;
+exports.fileTimestamp = fileTimestamp;
 exports.logTimestamp  = logTimestamp;
 exports.createDir     = createDir;
 exports.overwriteFile = overwriteFile;

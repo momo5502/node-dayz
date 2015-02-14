@@ -289,7 +289,7 @@ function setup()
     utils.createDir("../data/saves/");
 
     // Initialization
-    NET_RegisterHandler("/DayZServlet/init/enviroment/", NET_InitEnvironment);
+    NET_RegisterHandler("/DayZServlet/init/enviroment/", NET_InitEnvironment); // It's 'environment', not 'enviroment', Bohemia.
     NET_RegisterHandler("/DayZServlet/init/spawnstats/", NET_LogSpawnStats);
     NET_RegisterHandler("/DayZServlet/init/startup/", NET_StartServer);
     NET_RegisterHandler("/DayZServlet/init/sync/", NET_SyncServer);
