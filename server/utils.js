@@ -1,5 +1,6 @@
-var fs  = require('fs');
-var dns = require('dns');
+var fs     = require('fs');
+var dns    = require('dns');
+var crypto = require('crypto');
 
 function resolveHost(hostname, callback, param)
 {
@@ -58,14 +59,52 @@ function createDir(path)
     }
 }
 
-function overwriteFile(file, data)
+function deleteFile(file)
 {
     if(fs.existsSync(file))
     {
         fs.unlinkSync(file);
     }
+}
 
+function overwriteFile(file, data)
+{
+    deleteFile(file);
     fs.writeFileSync(file, data);
+}
+
+function md5(data)
+{
+    var hash = crypto.createHash('md5');
+    hash.setEncoding('hex');
+    hash.write(data);
+    hash.end();
+    return hash.read();
+}
+
+function md5File(file)
+{
+    var hash = "";
+
+    if(fs.existsSync(file))
+    {
+        var data = fs.readFileSync(file);
+        hash = md5(data);
+    }
+
+    return hash;
+}
+
+function getFileList(path)
+{
+    var array = [];
+
+    if(fs.existsSync(path))
+    {
+        array = fs.readdirSync(path);
+    }
+
+    return array;
 }
 
 exports.getIP         = getIP;
@@ -74,4 +113,8 @@ exports.formatTimeNum = formatTimeNum;
 exports.fileTimestamp = fileTimestamp;
 exports.logTimestamp  = logTimestamp;
 exports.createDir     = createDir;
+exports.deleteFile    = deleteFile;
 exports.overwriteFile = overwriteFile;
+exports.md5File       = md5File;
+exports.md5           = md5;
+exports.getFileList   = getFileList;

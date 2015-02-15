@@ -12,6 +12,7 @@
         "ipaddr.js": "0.1.8",
         "tcp-port-used": "0.1.2",
 		"easy-zip": "0.0.4",
-		"every-moment": "0.0.1"
+		"every-moment": "0.0.1",
+        "crypto": "0.0.3"
     }
 }
