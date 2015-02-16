@@ -54,6 +54,7 @@ function denieRequest(response)
 
 function requestHandler(request, response)
 {
+    // Check if ip/host is whitelisted
     if(!isLegalRequest(request))
     {
         logger.info("Access denied for: " + utils.getIP(request));
@@ -61,10 +62,12 @@ function requestHandler(request, response)
         return;
     }
 
+    // Call handler if available
     var parsedUrl = url.parse(request.url, true);
 
     if(handler != null && handler.parse(parsedUrl.pathname, request, response))
     {
+        // If response hasn't been finished, finish it.
         if(!response.finished)
         {
             response.writeHead(200);
@@ -73,6 +76,7 @@ function requestHandler(request, response)
     }
     else
     {
+        // Return unhandled requests
         logger.warn("Unhandled request (" + request.method + "): " + request.url, request);
 
         request.on("data", function(body)
@@ -86,6 +90,7 @@ function requestHandler(request, response)
     }
 }
 
+// Apply handler
 function useHandler(_handler)
 {
     handler = _handler;
@@ -105,8 +110,10 @@ function resolveWhitelistHosts()
 
 function start(port)
 {
+    // Resolve IPs from given hosts in the whitelist
     resolveWhitelistHosts();
 
+    // Check if port is free
     tcpPortUsed.check(port, "127.0.0.1").then(function(inUse)
     {
         if(inUse)
@@ -115,6 +122,7 @@ function start(port)
         }
         else
         {
+            // Start webserver
             server = http.createServer(requestHandler);
             server.listen(port, "0.0.0.0"); // Make sure to bind on IPv4
             backup.start();

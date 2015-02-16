@@ -33,7 +33,7 @@ exports.dediConfig =
     s_dblog          : true,    // Log database messages
     s_devlog         : true,    // Log development message
     s_qalog          : false,   // Log item spawn messages (might spam and slow everything)
-    s_synctime       : 60,      // Setting synchronization time (in seconds)
+    s_synctime       : 360,     // Setting synchronization time (in seconds)
     s_statstime      : 3,       // Stats request time (in seconds)?
 };
 

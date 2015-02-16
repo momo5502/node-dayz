@@ -6,6 +6,7 @@ var config  = require('../config');
 
 var lastHash = "";
 
+// Check if saves have changed and determine whether a backup is needed or not.
 function isBackupNeeded()
 {
     var files = utils.getFileList("../data/saves/");
@@ -28,6 +29,7 @@ function isBackupNeeded()
     return needed;
 }
 
+// Backup all the stats
 function backupStats()
 {
     if(isBackupNeeded())
@@ -46,6 +48,7 @@ function backupStats()
     }
 }
 
+// Start backup interval
 function start()
 {
     if(config.enableBackups)

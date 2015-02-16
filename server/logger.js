@@ -1,22 +1,22 @@
 var clc   = require('cli-color');
 var utils = require('./utils');
 
-function log(message, request)
+function log(message)
 {
     console.log(utils.logTimestamp() + message);
 }
 
-function warn(message, request)
+function warn(message)
 {
     console.warn(clc.yellowBright(utils.logTimestamp() + message));
 }
 
-function error(message, request)
+function error(message)
 {
     console.error(clc.redBright(utils.logTimestamp() + message));
 }
 
-function info(message, request)
+function info(message)
 {
     console.info(clc.cyanBright(utils.logTimestamp() + message));
 }

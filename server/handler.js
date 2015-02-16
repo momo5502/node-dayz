@@ -76,7 +76,7 @@ function LiveStats_KillPlayer(uid)
 
 function NET_InitEnvironment(request, response)
 {
-    logger.log("Environment init request handled.", request);
+    logger.log("Environment init request handled.");
 
     // Resolve requested host
     var host = request.headers.host;
@@ -93,7 +93,7 @@ function NET_InitEnvironment(request, response)
 
 function NET_PingResponse(request, response)
 {
-    logger.log("Ping request handled.", request);
+    logger.log("Ping request handled.");
     NET_SendJsonResponse(response);
 }
 
@@ -102,7 +102,7 @@ function NET_LogSpawnStats(request, response)
     request.on("data", function(body)
     {
         var data = JSON.parse(body);
-        logger.log("Server spawn (code: " + data.code + ", spawned: " + data.spawned + ", loaded: " + data.loaded + ") handled.", request);
+        logger.log("Server spawn (code: " + data.code + ", spawned: " + data.spawned + ", loaded: " + data.loaded + ") handled.");
     });
 
     NET_SendJsonResponse(response);
@@ -117,13 +117,13 @@ function NET_SendConfigResponse(response)
 function NET_StartServer(request, response)
 {
     NET_SendConfigResponse(response);
-    logger.log("Server startup handled.", request);
+    logger.log("Server startup handled.");
 }
 
 function NET_SyncServer(request, response)
 {
     NET_SendConfigResponse(response);
-    logger.log("Server sync handled.", request);
+    logger.log("Server sync handled.");
 }
 
 function NET_ReportMessage(request, response)
@@ -131,7 +131,7 @@ function NET_ReportMessage(request, response)
     request.on("data", function(body)
     {
         var data = JSON.parse(body);
-        logger.warn("Server report:" + data.message, request);
+        logger.warn("Server report:" + data.message);
     });
 
     NET_SendJsonResponse(response);
@@ -140,12 +140,12 @@ function NET_ReportMessage(request, response)
 function NET_HandleRequests(request, response)
 {
     NET_SendJsonResponse(response, config.dediRequests);
-    logger.log("Server requests handled.", request);
+    logger.log("Server requests handled.");
 }
 
 function NET_GetGlobalTypes(request, response)
 {
-    logger.log("Global type request handled.", request);
+    logger.log("Global type request handled.");
 
     var types = "{}";
 
@@ -161,7 +161,7 @@ function NET_GetGlobalTypes(request, response)
 
 function NET_SetGlobalTypes(request, response)
 {
-    logger.log("Global type saving handled.", request);
+    logger.log("Global type saving handled.");
 
     request.on("data", function(body)
     {
@@ -175,14 +175,14 @@ function NET_FindPlayer(request, response)
 {
     var query = url.parse(request.url, true).query;
     NET_SendRawJsonResponse(response, LiveStats_GetPlayer(query.uid));
-    logger.log("Find player request handled (uid: " + query.uid + ").", request);
+    logger.log("Find player request handled (uid: " + query.uid + ").");
 }
 
 function NET_LoadPlayer(request, response)
 {
     var query = url.parse(request.url, true).query;
     NET_SendRawJsonResponse(response, LiveStats_GetPlayer(query.uid));
-    logger.log("Load player request handled (uid: " + query.uid + ").", request);
+    logger.log("Load player request handled (uid: " + query.uid + ").");
 }
 
 function NET_CreatePlayer(request, response)
@@ -194,7 +194,7 @@ function NET_CreatePlayer(request, response)
         LiveStats_SetPlayer(query.uid, "{}");
     }
 
-    logger.log("Create player request handled (uid: " + query.uid + ").", request);
+    logger.log("Create player request handled (uid: " + query.uid + ").");
     NET_SendJsonResponse(response);
 }
 
@@ -205,7 +205,7 @@ function NET_SavePlayer(request, response)
     request.on("data", function(body)
     {
         LiveStats_SetPlayer(query.uid, body);
-        logger.log("Save player request handled (uid: " + query.uid + ").", request);
+        logger.log("Save player request handled (uid: " + query.uid + ").");
     });
 
     NET_SendJsonResponse(response);
@@ -221,7 +221,7 @@ function NET_QueuePlayer(request, response)
         var player = LiveStats_GetPlayerObj(query.uid);
         player.queue = data.queue; // Spawn delay
         LiveStats_SetPlayerObj(query.uid, player);
-        logger.log("Queue player request handled (uid: " + query.uid + ", queue: " + data.queue + ").", request);
+        logger.log("Queue player request handled (uid: " + query.uid + ", queue: " + data.queue + ").");
     });
 
     NET_SendJsonResponse(response);
@@ -232,7 +232,7 @@ function NET_DestroyPlayer(request, response)
     var query = url.parse(request.url, true).query;
     LiveStats_KillPlayer(query.uid);
     NET_SendJsonResponse(response);
-    logger.log("Destroy player request handled (uid: " + query.uid + ").", request);
+    logger.log("Destroy player request handled (uid: " + query.uid + ").");
 }
 
 function NET_KillPlayer(request, response)
@@ -240,7 +240,7 @@ function NET_KillPlayer(request, response)
     var query = url.parse(request.url, true).query;
     LiveStats_KillPlayer(query.uid);
     NET_SendJsonResponse(response);
-    logger.log("Kill player request handled (uid: " + query.uid + ").", request);
+    logger.log("Kill player request handled (uid: " + query.uid + ").");
 }
 
 function NET_ParseRoot(request, response)
