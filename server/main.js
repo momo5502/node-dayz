@@ -13,4 +13,4 @@ console.log(clc.blackBright("#                                                  
 console.log(clc.blackBright("###############################################################################\n"));
 
 server.useHandler(handler);
-server.start(config.port);
+server.start(config.port, config.ip);

@@ -77,7 +77,7 @@ function requestHandler(request, response)
     else
     {
         // Return unhandled requests
-        logger.warn("Unhandled request (" + request.method + "): " + request.url, request);
+        logger.warn("Unhandled request (" + request.method + "): " + request.url);
 
         request.on("data", function(body)
         {
@@ -108,7 +108,7 @@ function resolveWhitelistHosts()
     }
 }
 
-function start(port)
+function start(port, ip)
 {
     // Resolve IPs from given hosts in the whitelist
     resolveWhitelistHosts();
@@ -124,7 +124,7 @@ function start(port)
         {
             // Start webserver
             server = http.createServer(requestHandler);
-            server.listen(port, "0.0.0.0"); // Make sure to bind on IPv4
+            server.listen(port, ip);
             backup.start();
             logger.info("Server started on port " + port);
         }
