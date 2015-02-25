@@ -10,7 +10,7 @@ exports.whitelist =             // IP/Hostname whitelist
 ];
 
 // Environment config
-var version = [0, 53, 126384];  // DayZ Server version
+var version = [0, 54, 126667];  // DayZ Server version
 
 exports.dediConfig =
 {
