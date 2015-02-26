@@ -8,11 +8,11 @@ var Cmd_ArgC;
 var Cmd_ArgV;
 var Cmd_AddCommand;
 
-exports.initialize = function(argC, argV, addCommand)
+exports.initialize = function(input)
 {
-    Cmd_ArgC       = argC;
-    Cmd_ArgV       = argV;
-    Cmd_AddCommand = addCommand;
+    Cmd_ArgC       = input.Cmd_ArgC;
+    Cmd_ArgV       = input.Cmd_ArgV;
+    Cmd_AddCommand = input.Cmd_AddCommand;
 
     Cmd_AddCommand("exit", Exit_f);           // Terminate the NodeDayZ server
     Cmd_AddCommand("terminate", Terminate_f); // Terminate the servers connected to the hive

@@ -107,7 +107,10 @@ function handle()
     rl.setPrompt("");
     rl.on('line', Cmd_ParseLine);
 
-    command.initialize(Cmd_ArgC, Cmd_ArgV, Cmd_AddCommand);
+    command.initialize(exports);
 }
 
-exports.handle = handle;
+exports.handle         = handle;
+exports.Cmd_ArgC       = Cmd_ArgC;
+exports.Cmd_ArgV       = Cmd_ArgV;
+exports.Cmd_AddCommand = Cmd_AddCommand;
