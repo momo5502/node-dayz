@@ -97,6 +97,18 @@ function useHandler(_handler)
     handler.setup();
 }
 
+function addWhitelistHost(host, bits)
+{
+    var index = whitelist.length;
+    whitelist[index] = [host, bits];
+
+    utils.resolveHost(whitelist[index][0], function(err, addresses, family, param)
+    {
+        whitelist[param][0] = addresses;
+        logger.info("IP whitelisted: " + addresses + "/" + bits);
+    }, index);
+}
+
 function resolveWhitelistHosts()
 {
     for(var i = 0; i < whitelist.length; i++)
@@ -136,3 +148,4 @@ function start(port, ip)
 
 exports.useHandler = useHandler
 exports.start      = start;
+exports.whitelist  = addWhitelistHost;

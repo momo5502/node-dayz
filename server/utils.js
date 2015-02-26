@@ -107,6 +107,12 @@ function getFileList(path)
     return array;
 }
 
+function parseBool(string)
+{
+    var low = string.trim().toLowerCase();
+    return (low === "true" || low === "1");
+}
+
 exports.getIP         = getIP;
 exports.resolveHost   = resolveHost;
 exports.formatTimeNum = formatTimeNum;
@@ -118,3 +124,4 @@ exports.overwriteFile = overwriteFile;
 exports.md5File       = md5File;
 exports.md5           = md5;
 exports.getFileList   = getFileList;
+exports.parseBool     = parseBool;

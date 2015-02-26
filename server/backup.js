@@ -61,3 +61,4 @@ function start()
 }
 
 exports.start = start;
+exports.run   = backupStats;
