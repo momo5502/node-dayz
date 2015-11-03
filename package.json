@@ -1,0 +1,31 @@
+{
+  "name": "node-dayz",
+  "version": "1.0.0",
+  "description": "DayZ Servlet based on NodeJS",
+  "main": "node-dayz.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:momo5502/node-dayz.git"
+  },
+  "keywords": [
+    "dayz"
+  ],
+  "author": "momo5502",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/momo5502/node-dayz/issues"
+  },
+  "homepage": "https://github.com/momo5502/node-dayz",
+  "dependencies": {
+    "cli-color": "^1.1.0",
+    "crypto": "0.0.3",
+    "easy-zip": "0.0.4",
+    "every-moment": "0.0.1",
+    "ipaddr.js": "^1.0.3",
+    "tcp-port-used": "^0.1.2",
+    "url": "^0.11.0"
+  }
+}

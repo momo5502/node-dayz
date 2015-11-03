@@ -1,9 +1,9 @@
-var clc     = require('cli-color');
-var server  = require('./server');
+var clc = require('cli-color');
+var server = require('./server');
 var handler = require('./handler');
-var backup  = require('./backup');
-var input   = require('./input');
-var config  = require('../config');
+var backup = require('./backup');
+var input = require('./input');
+var config = require('../config');
 
 process.title = "NodeDayZ";
 

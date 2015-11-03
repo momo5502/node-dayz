@@ -1,64 +1,64 @@
-var every   = require('every-moment');
+var every = require('every-moment');
 var easyZip = require('easy-zip');
-var logger  = require('./logger');
-var utils   = require('./utils');
-var config  = require('../config');
+var logger = require('./logger');
+var utils = require('./utils');
+var config = require('../config');
 
 var lastHash = "";
 
 // Check if saves have changed and determine whether a backup is needed or not.
 function isBackupNeeded()
 {
-    var files = utils.getFileList("../data/saves/");
+  var files = utils.getFileList("../data/saves/");
 
-    var hash = "";
+  var hash = "";
 
-    for(var i = 0; i < files.length; i++)
-    {
-        var file = "../data/saves/" + files[i];
-        var md5 = utils.md5File(file);
+  for (var i = 0; i < files.length; i++)
+  {
+    var file = "../data/saves/" + files[i];
+    var md5 = utils.md5File(file);
 
-        hash += md5;
-    }
+    hash += md5;
+  }
 
-    hash = utils.md5(hash);
+  hash = utils.md5(hash);
 
-    var needed = (lastHash != hash);
-    lastHash = hash;
+  var needed = (lastHash != hash);
+  lastHash = hash;
 
-    return needed;
+  return needed;
 }
 
 // Backup all the stats
 function backupStats()
 {
-    if(isBackupNeeded())
-    {
-        var zip = new easyZip.EasyZip();
+  if (isBackupNeeded())
+  {
+    var zip = new easyZip.EasyZip();
 
-        zip.zipFolder("../data/saves",function()
-        {
-            zip.writeToFile("../data/backups/" + utils.fileTimestamp() + ".zip");
-            logger.info("Stats backup done!");
-        });
-    }
-    else
+    zip.zipFolder("../data/saves", function()
     {
-        logger.info("No need to backup stats. Nothing has changed!");
-    }
+      zip.writeToFile("../data/backups/" + utils.fileTimestamp() + ".zip");
+      logger.info("Stats backup done!");
+    });
+  }
+  else
+  {
+    logger.info("No need to backup stats. Nothing has changed!");
+  }
 }
 
 // Start backup interval
 function start()
 {
-    if(config.enableBackups)
-    {
-        utils.createDir("../data/");
-        utils.createDir("../data/backups/");
+  if (config.enableBackups)
+  {
+    utils.createDir("../data/");
+    utils.createDir("../data/backups/");
 
-        every(config.backupInterval[0], config.backupInterval[1], backupStats);
-    }
+    every(config.backupInterval[0], config.backupInterval[1], backupStats);
+  }
 }
 
 exports.start = start;
-exports.run   = backupStats;
+exports.run = backupStats;

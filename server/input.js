@@ -1,8 +1,8 @@
 var readline = require('readline');
-var logger   = require('./logger');
-var utils    = require('./utils');
-var command  = require('./command');
-var config   = require('../config');
+var logger = require('./logger');
+var utils = require('./utils');
+var command = require('./command');
+var config = require('../config');
 
 var rl = null;
 var commands = [];
@@ -10,107 +10,107 @@ var params = [];
 
 function Cmd_ArgC()
 {
-    return params.length;
+  return params.length;
 }
 
 function Cmd_ArgV(index)
 {
-    if(Cmd_ArgC() <= index)
-    {
-        return "";
-    }
-    else
-    {
-        return params[index];
-    }
+  if (Cmd_ArgC() <= index)
+  {
+    return "";
+  }
+  else
+  {
+    return params[index];
+  }
 }
 
 function Cmd_ParseParams(line)
 {
-    line = Cmd_ClearLine(line);
-    params = line.split(" ");
+  line = Cmd_ClearLine(line);
+  params = line.split(" ");
 }
 
 function Cmd_AddCommand(command, callback)
 {
-    commands[command.toLowerCase()] = callback;
+  commands[command.toLowerCase()] = callback;
 }
 
 function Cmd_ExecuteSingleCommand(command)
 {
-    // Parse params
-    Cmd_ParseParams(command);
+  // Parse params
+  Cmd_ParseParams(command);
 
-    // Execute command
-    Cmd_ParseCommand(Cmd_ArgV(0));
+  // Execute command
+  Cmd_ParseCommand(Cmd_ArgV(0));
 }
 
 function Cmd_ClearLine(line)
 {
-    line = "" + line;
-    line = line.trim();
+  line = "" + line;
+  line = line.trim();
 
-    while(line.indexOf("  ") != -1)
-    {
-        line = line.replace("  ", " ");
-    }
+  while (line.indexOf("  ") != -1)
+  {
+    line = line.replace("  ", " ");
+  }
 
-    return line;
+  return line;
 }
 
 function Cmd_ParseCommand(command)
 {
-    var callback = commands[command.toLowerCase()];
+  var callback = commands[command.toLowerCase()];
 
-    if(callback != null)
-    {
-        callback();
-    }
+  if (callback != null)
+  {
+    callback();
+  }
 }
 
 function Cmd_ParseLine(line)
 {
-    // Clear the line
-    line = Cmd_ClearLine(line);
+  // Clear the line
+  line = Cmd_ClearLine(line);
 
-    // Parse command line
-    var cmds = line.split(";");
+  // Parse command line
+  var cmds = line.split(";");
 
-    for(var i = 0; i < cmds.length; i++)
-    {
-        Cmd_ExecuteSingleCommand(cmds[i]);
-    }
+  for (var i = 0; i < cmds.length; i++)
+  {
+    Cmd_ExecuteSingleCommand(cmds[i]);
+  }
 }
 
 function Cmd_AutoComplete(line)
 {
-    var hits = [];
+  var hits = [];
 
-    if(line.trim() != "")
+  if (line.trim() != "")
+  {
+    for (key in commands)
     {
-        for (key in commands)
-        {
-            if(key.indexOf(line) == 0)
-            {
-                hits[hits.length] = key;
-            }
-        }
+      if (key.indexOf(line) == 0)
+      {
+        hits[hits.length] = key;
+      }
     }
+  }
 
-    return [hits, line];
+  return [hits, line];
 }
 
 function handle()
 {
-    rl = readline.createInterface(process.stdin, process.stdout, Cmd_AutoComplete);
+  rl = readline.createInterface(process.stdin, process.stdout, Cmd_AutoComplete);
 
-    rl.setPrompt("");
-    rl.on('line', Cmd_ParseLine);
+  rl.setPrompt("");
+  rl.on('line', Cmd_ParseLine);
 
-    command.initialize(exports);
+  command.initialize(exports);
 }
 
-exports.handle         = handle;
-exports.Cmd_ArgC       = Cmd_ArgC;
-exports.Cmd_ArgV       = Cmd_ArgV;
+exports.handle = handle;
+exports.Cmd_ArgC = Cmd_ArgC;
+exports.Cmd_ArgV = Cmd_ArgV;
 exports.Cmd_AddCommand = Cmd_AddCommand;

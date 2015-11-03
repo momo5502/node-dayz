@@ -3,10 +3,10 @@ exports.ip   = "0.0.0.0"        // Server ip
 
 exports.whitelist =             // IP/Hostname whitelist
 [
-    //["0.0.0.0"    , 0], // No whitelist
+    ["0.0.0.0"    , 0], // No whitelist
     //["10.0.0.0"   , 16],
     //["192.168.0.0", 24],
-    ["localhost"  , 32],
+    //["localhost"  , 32],
 ];
 
 // Environment config
