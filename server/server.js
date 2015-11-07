@@ -5,7 +5,7 @@ var tcpPortUsed = require('tcp-port-used');
 var utils = require('./utils');
 var logger = require('./logger');
 var backup = require('./backup');
-var config = require('../config');
+var config = require(root.configFile);
 
 var server = null;
 var handler = null;
@@ -45,7 +45,7 @@ function isLegalRequest(request)
   return false;
 }
 
-function denieRequest(response)
+function denyRequest(response)
 {
   response.writeHead(403,
   {
@@ -61,7 +61,7 @@ function requestHandler(request, response)
   if (!isLegalRequest(request))
   {
     logger.info("Access denied for: " + utils.getIP(request));
-    denieRequest(response);
+    denyRequest(response);
     return;
   }
 

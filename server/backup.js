@@ -9,13 +9,13 @@ var lastHash = "";
 // Check if saves have changed and determine whether a backup is needed or not.
 function isBackupNeeded()
 {
-  var files = utils.getFileList("../data/saves/");
+  var files = utils.getFileList(root.configDir + "saves/");
 
   var hash = "";
 
   for (var i = 0; i < files.length; i++)
   {
-    var file = "../data/saves/" + files[i];
+    var file = root.configDir + "saves/" + files[i];
     var md5 = utils.md5File(file);
 
     hash += md5;
@@ -36,9 +36,9 @@ function backupStats()
   {
     var zip = new easyZip.EasyZip();
 
-    zip.zipFolder("../data/saves", function()
+    zip.zipFolder(root.configDir + "saves", function()
     {
-      zip.writeToFile("../data/backups/" + utils.fileTimestamp() + ".zip");
+      zip.writeToFile(root.configDir + "backups/" + utils.fileTimestamp() + ".zip");
       logger.info("Stats backup done!");
     });
   }
@@ -53,8 +53,8 @@ function start()
 {
   if (config.enableBackups)
   {
-    utils.createDir("../data/");
-    utils.createDir("../data/backups/");
+    utils.createDir(root.configDir);
+    utils.createDir(root.configDir + "backups/");
 
     every(config.backupInterval[0], config.backupInterval[1], backupStats);
   }
