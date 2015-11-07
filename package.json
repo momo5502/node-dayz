@@ -1,6 +1,6 @@
 {
   "name": "node-dayz",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "DayZ Servlet based on NodeJS",
   "preferGlobal": true,
   "bin":
