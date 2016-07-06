@@ -2,7 +2,7 @@ var logger = require('./logger');
 var utils = require('./utils');
 var backup = require('./backup');
 var server = require('./server');
-var config = require(root.configFile);
+var config = require(global.configFile);
 
 var Cmd_ArgC;
 var Cmd_ArgV;

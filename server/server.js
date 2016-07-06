@@ -5,7 +5,7 @@ var tcpPortUsed = require('tcp-port-used');
 var utils = require('./utils');
 var logger = require('./logger');
 var backup = require('./backup');
-var config = require(root.configFile);
+var config = require(global.configFile);
 
 var server = null;
 var handler = null;

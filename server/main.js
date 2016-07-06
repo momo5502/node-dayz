@@ -3,7 +3,7 @@ var server = require('./server');
 var handler = require('./handler');
 var backup = require('./backup');
 var input = require('./input');
-var config = require(root.configFile);
+var config = require(global.configFile);
 
 process.title = "NodeDayZ";
 

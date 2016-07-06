@@ -2,7 +2,7 @@ var fs = require('fs');
 var url = require('url');
 var logger = require('./logger');
 var utils = require('./utils');
-var config = require(root.configFile);
+var config = require(global.configFile);
 
 var initialized = false;
 var responseHandlers = [];

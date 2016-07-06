@@ -2,7 +2,7 @@ var readline = require('readline');
 var logger = require('./logger');
 var utils = require('./utils');
 var command = require('./command');
-var config = require(root.configFile);
+var config = require(global.configFile);
 
 var rl = null;
 var commands = [];
