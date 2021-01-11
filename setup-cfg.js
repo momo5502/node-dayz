@@ -5,12 +5,12 @@ var utils = require("./server/utils");
 applyConfigPath();
 
 // Create data directory
-utils.createDir(root.configDir);
+utils.createDir(global.configDir);
 
 // Copy config template
-if (!fs.existsSync(root.configFile))
+if (!fs.existsSync(global.configFile))
 {
-  fse.copySync(root.configFileTemplate, root.configFile);
+  fse.copySync(global.configFileTemplate, global.configFile);
 }
 
 function applyConfigPath()
@@ -24,7 +24,7 @@ function applyConfigPath()
     modulepath = modulepath.substring(0, pos + 1);
   }
 
-  root.configDir = process.cwd() + "\\data\\";
-  root.configFile = root.configDir + "config.js";
-  root.configFileTemplate = modulepath + "config.js";
+  global.configDir = process.cwd() + "\\data\\";
+  global.configFile = global.configDir + "config.js";
+  global.configFileTemplate = modulepath + "config.js";
 }

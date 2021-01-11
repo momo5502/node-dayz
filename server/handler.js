@@ -42,7 +42,7 @@ function LiveStats_GetPlayer(uid)
 function LiveStats_GetPlayerObj(uid)
 {
   var player = {};
-  var file = root.configDir + "saves/" + uid + ".json";
+  var file = global.configDir + "saves/" + uid + ".json";
 
   if (uid != null && !isNaN(uid) && fs.existsSync(file))
   {
@@ -58,7 +58,7 @@ function LiveStats_SetPlayer(uid, data)
 {
   if (uid != null && !isNaN(uid))
   {
-    utils.overwriteFile(root.configDir + "saves/" + uid + ".json", data);
+    utils.overwriteFile(global.configDir + "saves/" + uid + ".json", data);
   }
 }
 
@@ -151,7 +151,7 @@ function NET_GetGlobalTypes(request, response)
 
   var types = "{}";
 
-  var file = root.configDir + "type.json";
+  var file = global.configDir + "type.json";
 
   if (fs.existsSync(file))
   {
@@ -167,7 +167,7 @@ function NET_SetGlobalTypes(request, response)
 
   request.on("data", function(body)
   {
-    utils.overwriteFile(root.configDir + "type.json", body);
+    utils.overwriteFile(global.configDir + "type.json", body);
   });
 
   NET_SendJsonResponse(response);
@@ -191,7 +191,7 @@ function NET_CreatePlayer(request, response)
 {
   var query = url.parse(request.url, true).query;
 
-  if (!fs.existsSync(root.configDir + "saves/" + query.uid + ".json"))
+  if (!fs.existsSync(global.configDir + "saves/" + query.uid + ".json"))
   {
     LiveStats_SetPlayer(query.uid, "{}");
   }
@@ -296,8 +296,8 @@ function setup()
   if (initialized) return;
   initialized = true;
 
-  utils.createDir(root.configDir);
-  utils.createDir(root.configDir + "saves/");
+  utils.createDir(global.configDir);
+  utils.createDir(global.configDir + "saves/");
 
   // Initialization
   NET_RegisterHandler("/DayZServlet/init/enviroment/", NET_InitEnvironment); // It's 'environment', not 'enviroment', Bohemia.
